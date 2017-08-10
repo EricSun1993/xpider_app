@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>pages/FaceTrain.qml</file>
+        <file>pages/FaceTrainForm.ui.qml</file>
+        <file>pages/PanelFPV.qml</file>
+        <file>pages/PanelFPVForm.ui.qml</file>
+        <file>pages/PanelMap.qml</file>
+        <file>pages/PanelMapForm.ui.qml</file>
+        <file>pages/PanelParameter.qml</file>
+        <file>pages/PanelParameterForm.ui.qml</file>
+        <file>pages/PanelScan.qml</file>
+        <file>pages/PanelScanForm.ui.qml</file>
+        <file>pages/PanelSettings.qml</file>
+        <file>pages/PanelSettingsForm.ui.qml</file>
+        <file>components/DiscoveredDeviceInfo.qml</file>
+        <file>components/DiscoveredDeviceInfoForm.ui.qml</file>
+        <file>components/Joy.qml</file>
+        <file>components/JoyForm.ui.qml</file>
+        <file>components/SoundFlow.qml</file>
+        <file>components/SoundFlowForm.ui.qml</file>
+        <file>components/StepChart.qml</file>
+        <file>components/StepChartForm.ui.qml</file>
+        <file>components/XDialog.qml</file>
+        <file>pages/PanelAbout.qml</file>
+        <file>pages/PanelAboutForm.ui.qml</file>
+        <file>pages/PanelNeural.qml</file>
+        <file>pages/PanelNeural1.qml</file>
+        <file>pages/PanelNeural1Form.ui.qml</file>
+        <file>pages/PanelNeural2.qml</file>
+        <file>pages/PanelNeural2Form.ui.qml</file>
+        <file>pages/PanelNeural3.qml</file>
+        <file>pages/PanelNeural3Form.ui.qml</file>
+        <file>components/NeuralItem.qml</file>
+        <file>components/NeuralItemForm.ui.qml</file>
+    </qresource>
+</RCC>
