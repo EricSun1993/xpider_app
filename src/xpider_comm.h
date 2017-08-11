@@ -20,6 +20,7 @@
 #include <QTimer>
 #include <QObject>
 #include <QThread>
+#include <QtNetwork>
 #include <QTcpSocket>
 
 #include "hdlc_qt.h"
@@ -49,6 +50,8 @@ public:
     ~XpiderComm();
 
     bool is_connecting() { return is_connecting_; }
+
+    bool ChangeSSID(QString ssid_name);
 
 signals:
     void connected();

@@ -70,6 +70,12 @@ void XpiderComm::Disconnect() {
   }
 }
 
+bool XpiderComm::ChangeSSID(QString ssid_name) {
+  QNetworkAccessManager network_manager;
+
+  connect(network_manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(PostAnswer(QNetworkReply*)));
+}
+
 void XpiderComm::SocketConnectedHanlder() {
   connected_ = true;
 

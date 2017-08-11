@@ -153,6 +153,7 @@ signals:
   void nameUpdated(QString name);
   void versionUpdated(QString version);
   void firmwareUpdated(QString firmware);
+  void controllerUpdated(QString controller);
 
 public slots:
   void NewFrameHandler(QByteArray);

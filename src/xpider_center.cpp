@@ -226,18 +226,25 @@ void XpiderCenter::EmitInfoUpdated(const char* buffer) {
       qDebug() << "Get Register(UUID): " << value_qstring;
       break;
     }
-    case XpiderProtocol::kRegFirmware: {
-      value_string = xpider_info_.firmware_version_;
+    case XpiderProtocol::kRegHardwareVersion: {
+      value_string = xpider_info_.custom_data_.hardware_version;
+      value_qstring = QString(value_string);
+      emit versionUpdated(value_qstring);
+      qDebug() << "Get Register(Version): " << value_qstring;
+      break;
+    }
+    case XpiderProtocol::kRegFirmwareVersion: {
+      value_string = xpider_info_.firmware_version;
       value_qstring = QString(value_string);
       emit firmwareUpdated(value_qstring);
       qDebug() << "Get Register(Firmware): " << value_qstring;
       break;
     }
-    case XpiderProtocol::kRegVersion: {
-      value_string = xpider_info_.custom_data_.hardware_version;
+    case XpiderProtocol::kRegControllerVersion: {
+      value_string = xpider_info_.controller_version;
       value_qstring = QString(value_string);
-      emit versionUpdated(value_qstring);
-      qDebug() << "Get Register(Version): " << value_qstring;
+      qDebug() << "Get Register(Controller): " << value_qstring;
+      emit controllerUpdated(value_qstring);
       break;
     }
   }
@@ -258,12 +265,17 @@ void XpiderCenter::getXpiderInfo() {
   temp.append(reinterpret_cast<char*>(buffer), length);
   PushSendBuffer(temp);
 
-  xpider_protocol_.GetRegister(XpiderProtocol::kRegVersion, &buffer, &length);
+  xpider_protocol_.GetRegister(XpiderProtocol::kRegHardwareVersion, &buffer, &length);
   temp.clear();
   temp.append(reinterpret_cast<char*>(buffer), length);
   PushSendBuffer(temp);
 
-  xpider_protocol_.GetRegister(XpiderProtocol::kRegFirmware, &buffer, &length);
+  xpider_protocol_.GetRegister(XpiderProtocol::kRegFirmwareVersion, &buffer, &length);
+  temp.clear();
+  temp.append(reinterpret_cast<char*>(buffer), length);
+  PushSendBuffer(temp);
+
+  xpider_protocol_.GetRegister(XpiderProtocol::kRegControllerVersion, &buffer, &length);
   temp.clear();
   temp.append(reinterpret_cast<char*>(buffer), length);
   PushSendBuffer(temp);
