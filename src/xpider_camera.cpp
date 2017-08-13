@@ -36,6 +36,7 @@ XpiderCamera::XpiderCamera(QObject *parent) : QObject(parent) {
   connect(&rak_camera_, &RakCamera::error, this, &XpiderCamera::errorGet);
   connect(&rak_camera_, &RakCamera::imageReady, this, &XpiderCamera::imageReceived);
   connect(this, &XpiderCamera::startRakVideo, &rak_camera_, &RakCamera::doWork);
+  // connect(&rak_thread_, &QThread::finished, &rak_camera_, &RakCamera::deleteLater);
 
   is_opened_ = false;
 }
@@ -82,6 +83,7 @@ bool XpiderCamera::stopVideo() {
   }
 
   rak_thread_.quit();
+  rak_thread_.wait();
 
   if(videoSurface_) {
     if(videoSurface_->isActive()) {

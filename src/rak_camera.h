@@ -19,6 +19,7 @@ class RakCamera : public QObject {
   Q_OBJECT
 public:
   explicit RakCamera(QObject *parent = 0);
+  ~RakCamera();
 
   bool is_running() { return is_running_; }
 

@@ -51,8 +51,6 @@ public:
 
     bool is_connecting() { return is_connecting_; }
 
-    bool ChangeSSID(QString ssid_name);
-
 signals:
     void connected();
     void disconnected();

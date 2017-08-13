@@ -25,6 +25,8 @@
 #include <QTime>
 #include <QColor>
 
+#include "xpider_wifi.h"
+
 const quint16 XpiderCenter::kXpiderPort = 80;
 const QString XpiderCenter::kXpiderHost = QString::fromStdString("192.168.100.1");
 
@@ -291,6 +293,11 @@ void XpiderCenter::updateName(QString name) {
   QByteArray temp;
   temp.append(reinterpret_cast<char*>(buffer), length);
   PushSendBuffer(temp);
+
+  if(connected_) {
+    bool ssid_status = xpider_wifi_.SetSSID(name);
+    qDebug() << "(XpiderCenter) Change SSID" << ssid_status;
+  }
 }
 
 void XpiderCenter::emergencyStop() {

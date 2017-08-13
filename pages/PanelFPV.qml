@@ -162,9 +162,9 @@ PanelFPVForm {
     target: panel_fpv_camera
     onConnectionResult: {
       if(result_code === true) {
-        panel_fpv_camera_status_text.visible = false;
+        panel_fpv_camera_status_text.visible = false
       } else {
-
+        panel_fpv_camera_status_text.text = "Camera Error, Code: " + result_code
       }
     }
   }

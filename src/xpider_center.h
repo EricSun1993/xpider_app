@@ -32,6 +32,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include "xpider_wifi.h"
 #include "xpider_info.h"
 #include "xpider_comm.h"
 #include "xpider_protocol.h"
@@ -55,6 +56,7 @@ public:
 
 private:
   QThread comm_thread_;
+  XpiderWIFI xpider_wifi_;
   XpiderComm xpider_comm_;
 
   XpiderInfo xpider_info_;

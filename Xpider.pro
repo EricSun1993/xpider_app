@@ -32,7 +32,8 @@ HEADERS += \
   src/face_detect_filter.h \
   src/hdlc_qt.h \
   src/xpider_comm.h \
-  src/arduino_log.h
+  src/arduino_log.h \
+  src/xpider_wifi.h
 
 SOURCES += \
   main.cpp \
@@ -47,7 +48,8 @@ SOURCES += \
   src/face_provider.cpp \
   src/face_detect_filter.cpp \
   src/hdlc_qt.cpp \
-  src/xpider_comm.cpp
+  src/xpider_comm.cpp \
+  src/xpider_wifi.cpp
 
 LIBS += \
   -lz \

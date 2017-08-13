@@ -13,6 +13,9 @@ RakCamera::RakCamera(QObject *parent) : QObject(parent) {
   video_stream_index_ = -1;
 }
 
+RakCamera::~RakCamera() {
+}
+
 void RakCamera::Initialize(QMutex* mutex, std::string url) {
   url_ = url;
   mutex_ = mutex;
@@ -85,6 +88,8 @@ void RakCamera::doWork() {
   avformat_network_init();
 
   if(!start()) {
+    qDebug() << "(RakCamera) doWork failed";
+    stop();
     return;
   }
 
