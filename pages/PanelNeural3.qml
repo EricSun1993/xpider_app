@@ -469,10 +469,16 @@ PanelNeural3Form {
   }
 
   Component.onCompleted: {
-    console.debug("Get sensor list: ", sensor_list);
+    console.debug("Get sensor list: ", sensor_list)
+    var raw_data = xpider_center.loadGroupFile()
+    console.debug("Load group data: ", raw_data)
+    if(raw_data !== "") {
+      groups = JSON.parse(raw_data)
+    }
   }
 
   Component.onDestruction: {
-    xpider_center.emergencyStop();
+    xpider_center.emergencyStop()
+    xpider_center.saveGroupFile(JSON.stringify(groups))
   }
 }

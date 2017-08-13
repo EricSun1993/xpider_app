@@ -25,6 +25,8 @@
 #include <QTime>
 #include <QColor>
 
+#include <QQmlApplicationEngine>
+
 #include "xpider_wifi.h"
 
 const quint16 XpiderCenter::kXpiderPort = 80;
@@ -63,6 +65,9 @@ XpiderCenter::XpiderCenter(QObject *parent) : QObject(parent) {
   connect(&xpider_comm_, &XpiderComm::connected, this, &XpiderCenter::deviceConnectedHandler);
   connect(&xpider_comm_, &XpiderComm::disconnected, this, &XpiderCenter::deviceDisconnectedHandler);
   comm_thread_.start();
+
+  QQmlApplicationEngine engine;
+  xpider_neural_.SetFilePath(engine.offlineStoragePath());
 }
 
 void XpiderCenter::connectXpider() {
@@ -631,8 +636,7 @@ int XpiderCenter::sendLearnInfo(QVariantList data) {
   return 1;
 }
 
-int XpiderCenter::sendGroupInfo()
-{
+int XpiderCenter::sendGroupInfo() {
   //QVector(QVector(1, 1, 100, 7, 208), QVector(2, 1, 100, 7, 208, 2, 100, 7, 208), QVector(2, 1, 100, 7, 208, 2, 100, 7, 208))
   QVector<uint8_t> temp_whole_info;
   //int all_group_len = 0;
@@ -774,4 +778,12 @@ int XpiderCenter::sendRunData() {
 int XpiderCenter::forget() {
   neuron_engine_->ResetEngine();
   return 1;
+}
+
+QByteArray XpiderCenter::loadGroupFile() {
+  return xpider_neural_.LoadGroupData();
+}
+
+bool XpiderCenter::saveGroupFile(QByteArray group_data) {
+  return xpider_neural_.SaveGroupData(group_data);
 }

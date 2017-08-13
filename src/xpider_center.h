@@ -35,6 +35,7 @@
 #include "xpider_wifi.h"
 #include "xpider_info.h"
 #include "xpider_comm.h"
+#include "xpider_neural.h"
 #include "xpider_protocol.h"
 
 #include "grid_map.h"
@@ -58,6 +59,7 @@ private:
   QThread comm_thread_;
   XpiderWIFI xpider_wifi_;
   XpiderComm xpider_comm_;
+  XpiderNeural xpider_neural_;
 
   XpiderInfo xpider_info_;
   XpiderProtocol xpider_protocol_;
@@ -128,6 +130,9 @@ public:
   Q_INVOKABLE int forget();
   Q_INVOKABLE bool saveGroupData(QByteArray list);
   Q_INVOKABLE bool learn(int group_index, QVariantList sensor_list);
+
+  Q_INVOKABLE QByteArray loadGroupFile();
+  Q_INVOKABLE bool saveGroupFile(QByteArray group_data);
 
 private:
   void EmitInfoUpdated(const char* buffer);
