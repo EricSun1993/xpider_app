@@ -5,7 +5,7 @@ import "../components"
 Item {
   property alias sensor_description_label: sensor_description_label
   property alias panel_neural_2_gridview: panel_neural_2_gridview
-  property alias panel_nerual_2_button: panel_nerual_2_button
+  property alias panel_neural_2_button: panel_neural_2_button
 
   id: page
 
@@ -22,7 +22,7 @@ Item {
   }
 
   Button {
-    id: panel_nerual_2_button
+    id: panel_neural_2_button
     width: page.width * 0.139
     height: page.height * 0.093
     anchors.bottom: page.bottom

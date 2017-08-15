@@ -143,10 +143,10 @@ PanelFPVForm {
     }
 
     onDeviceDisconnected: {
-      if(panel_fpv_camera.is_opened() === true) {
-        panel_fpv_camera_status_text.text = "Please check wifi and xpider power status"
-        panel_fpv_camera.stopVideo();
-      }
+//      if(panel_fpv_camera.is_opened() === true) {
+//        panel_fpv_camera_status_text.text = "Please check wifi and xpider power status"
+//        panel_fpv_camera.stopVideo();
+//      }
     }
 
     onVoltageUpdated: {

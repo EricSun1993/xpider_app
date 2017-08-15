@@ -20,7 +20,6 @@
 #include "xpider_center.h"
 
 #include <math.h>
-
 #include <QThread>
 #include <QTime>
 #include <QColor>
@@ -95,7 +94,7 @@ void XpiderCenter::deviceConnectedHandler() {
   }
 
   if(!comm_watchdog_.isActive()) {
-    comm_watchdog_.start(kCommWatchdogInterval);
+    // comm_watchdog_.start(kCommWatchdogInterval);
   }
 
   emit deviceConnected();
@@ -112,11 +111,13 @@ void XpiderCenter::deviceDisconnectedHandler() {
 }
 
 void XpiderCenter::CommErrorHandler(const QString &message) {
-  qDebug() << "(XpiderCenter) Error:" << message;
+  qWarning() << "(XpiderCenter) Error:" << message;
 }
 
 void XpiderCenter::CommWatchdog() {
   if(is_active_ == false) {
+    connected_ == false;
+    comm_watchdog_.stop();
     emit disconnectDevice();
     qDebug() << "(XpiderCenter) Xpider comm watchdog triggered";
   } else {
@@ -475,11 +476,11 @@ bool XpiderCenter::learn(int group_index, QVariantList sensor_list) {
         qDebug() << "Sound level: " << xpider_info_.sound_level << "remap:" << xpider_info_.sound_level;
       } else if(sensor_list.at(i).toInt() == 3) {
         for(uint8_t i=0; i<3; i++) {
-          remap_value = (xpider_info_.yaw_pitch_roll[i] - (-3.14)) * (255 - 0) / (3.14 - (-3.14)) + 0;
+          remap_value = (xpider_info_.yaw_pitch_roll[i] - (3.1415*2.0)) * (255 - 0) / (3.1415*2.0 - 0) + 0;
           temp_info.append(remap_value);
         }
         qDebug() << "YAW data:" << xpider_info_.yaw_pitch_roll[0] << "," << xpider_info_.yaw_pitch_roll[1] << "," << xpider_info_.yaw_pitch_roll[2] \
-                 << "remap:" << temp_info[temp_info.length()-3] << "," << temp_info[temp_info.length()-2] << "," << temp_info[temp_info.length()-1];
+                 << "remap:" << static_cast<int>(temp_info[temp_info.length()-3]) << "," << static_cast<int>(temp_info[temp_info.length()-2]) << "," << static_cast<int>(temp_info[temp_info.length()-1]);
       }
     }
     

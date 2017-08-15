@@ -3,7 +3,7 @@ import QtQuick.Controls 2.1
 
 Item {
   id: page
-  property alias panel_nerual_1_button: panel_nerual_1_button
+  property alias panel_neural_1_button: panel_neural_1_button
 
   Label {
     id: panel_neural_1_label
@@ -22,7 +22,7 @@ Item {
   }
 
   Button {
-    id: panel_nerual_1_button
+    id: panel_neural_1_button
     width: parent.width * 0.139
     height: parent.height * 0.093
     anchors.bottom: parent.bottom

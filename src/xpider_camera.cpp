@@ -82,7 +82,7 @@ bool XpiderCamera::stopVideo() {
     QThread::yieldCurrentThread();
   }
 
-  rak_thread_.quit();
+  rak_thread_.terminate();
   rak_thread_.wait();
 
   if(videoSurface_) {

@@ -20,64 +20,98 @@ JoyForm {
   signal joyUpdated(var x_value, var y_value, var z_value);
 
   component_joy_mousearea.onTouchUpdated: {
-    for(var tp_index=0; tp_index<touchPoints.length; tp_index++) {
-      var x, y, r, alpha, map_point;
+    var joy_left_x, joy_left_y, joy_left_opacity
+    var joy_right_x, joy_right_y, joy_right_opacity
 
-      if(touchPoints[tp_index].x < component_center_x) {
-        x = touchPoints[tp_index].x - joy1_center_x;
-        y = touchPoints[tp_index].y - joy1_center_y;
-        r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        alpha = calc_alpha(x, y, r);
-        if(r > range) {
+    if(touchPoints.length === 0) {
+      y_value = 0
+      x_value = 0
+      z_value = 0
+
+      left_joy_enable = false
+      joy_left_x = joy1_center_x - component_joy1_button_image.width/2
+      joy_left_y = joy1_center_y - component_joy1_button_image.height/2
+      joy_left_opacity = 0.3
+
+
+      right_joy_enable = false
+      joy_right_x = joy2_center_x - component_joy2_button_image.width/2
+      joy_right_y = joy2_center_y - component_joy2_button_image.height/2
+      joy_right_opacity = 0.3
+
+      component_joy1_move_image.opacity = joy_left_opacity
+      component_joy1_button_image.x = joy_left_x
+      component_joy1_button_image.y = joy_left_y
+
+      component_joy2_move_image.opacity = joy_right_opacity
+      component_joy2_button_image.x = joy_right_x
+      component_joy2_button_image.y = joy_right_y
+    } else {
+      for(var tp_index=0; tp_index<touchPoints.length; tp_index++) {
+        var x, y, r, alpha, map_point;
+
+        if(touchPoints[tp_index].x < component_center_x) {
+          x = touchPoints[tp_index].x - joy1_center_x;
+          y = touchPoints[tp_index].y - joy1_center_y;
+          r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+          alpha = calc_alpha(x, y, r);
+          if(r > range) {
+            if(left_joy_enable === true) {
+              joy_left_x= joy1_center_x + range*Math.cos(alpha) - component_joy1_button_image.width/2;
+              joy_left_y = joy1_center_y + range*Math.sin(alpha) - component_joy1_button_image.height/2;
+              // console.debug("Joy: left joy out of range, set max value");
+            }
+          } else {
+            left_joy_enable = true;
+            joy_left_x = touchPoints[tp_index].x - component_joy1_button_image.width/2;
+            joy_left_y = touchPoints[tp_index].y - component_joy1_button_image.height/2;
+            // console.debug("Joy: update left joy value");
+          }
+
           if(left_joy_enable === true) {
-            component_joy1_button_image.x= joy1_center_x + range*Math.cos(alpha) - component_joy1_button_image.width/2;
-            component_joy1_button_image.y = joy1_center_y + range*Math.sin(alpha) - component_joy1_button_image.height/2;
-            // console.debug("Joy: left joy out of range, set max value");
+            y_value = y / range * (-1.0);
+            if(y_value < -1.0) { y_value = -1.0; }
+            if(y_value > 1.0) { y_value = 1.0; }
+
+            joy_left_opacity = (r / range) + 0.2;
           }
+
+          component_joy1_move_image.opacity = joy_left_opacity
+          component_joy1_button_image.x = joy_left_x
+          component_joy1_button_image.y = joy_left_y
         } else {
-          left_joy_enable = true;
-          component_joy1_button_image.x = touchPoints[tp_index].x - component_joy1_button_image.width/2;
-          component_joy1_button_image.y = touchPoints[tp_index].y - component_joy1_button_image.height/2;
-          // console.debug("Joy: update left joy value");
-        }
+          x = touchPoints[tp_index].x - joy2_center_x;
+          y = touchPoints[tp_index].y - joy2_center_y;
+          r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+          alpha = calc_alpha(x, y, r);
 
-        if(left_joy_enable === true) {
-          y_value = y / range * (-1.0);
-          if(y_value < -1.0) { y_value = -1.0; }
-          if(y_value > 1.0) { y_value = 1.0; }
+          if(r > range) {
+            if(right_joy_enable === true) {
+              joy_right_x = joy2_center_x + range*Math.cos(alpha) - component_joy2_button_image.width/2;
+              joy_right_y = joy2_center_y + range*Math.sin(alpha) - component_joy2_button_image.height/2;
+              // console.debug("Joy: right joy out of range, set max value");
+            }
+          } else {
+            right_joy_enable = true;
+            joy_right_x = touchPoints[tp_index].x - component_joy2_button_image.width/2;
+            joy_right_y = touchPoints[tp_index].y - component_joy2_button_image.height/2;
+            // console.debug("Joy: update right joy value");
+          }
 
-          component_joy1_move_image.visible = true;
-          component_joy1_move_image.opacity = (r / range) + 0.2;
-        }
-      } else {
-        x = touchPoints[tp_index].x - joy2_center_x;
-        y = touchPoints[tp_index].y - joy2_center_y;
-        r = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        alpha = calc_alpha(x, y, r);
-
-        if(r > range) {
           if(right_joy_enable === true) {
-            component_joy2_button_image.x= joy2_center_x + range*Math.cos(alpha) - component_joy2_button_image.width/2;
-            component_joy2_button_image.y = joy2_center_y + range*Math.sin(alpha) - component_joy2_button_image.height/2;
-            // console.debug("Joy: right joy out of range, set max value");
+            x_value = x / range;
+            z_value = y / range * (-1.0);
+            if(x_value < -1.0) { x_value = -1.0; }
+            if(x_value > 1.0) { x_value = 1.0;}
+            if(z_value < -1.0) { z_value = -1.0; }
+            if(z_value > 1.0) { z_value = 1.0; }
+
+            joy_right_opacity = (r / range) + 0.2;
           }
-        } else {
-          right_joy_enable = true;
-          component_joy2_button_image.x = touchPoints[tp_index].x - component_joy2_button_image.width/2;
-          component_joy2_button_image.y = touchPoints[tp_index].y - component_joy2_button_image.height/2;
-          // console.debug("Joy: update right joy value");
-        }
 
-        if(right_joy_enable === true) {
-          x_value = x / range;
-          z_value = y / range * (-1.0);
-          if(x_value < -1.0) { x_value = -1.0; }
-          if(x_value > 1.0) { x_value = 1.0;}
-          if(z_value < -1.0) { z_value = -1.0; }
-          if(z_value > 1.0) { z_value = 1.0; }
-
-          component_joy2_move_image.visible = true;
-          component_joy2_move_image.opacity = (r / range) + 0.2;
+          component_joy2_move_image.opacity = joy_right_opacity
+          component_joy2_button_image.x = joy_right_x
+          component_joy2_button_image.y = joy_right_y
         }
       }
     }

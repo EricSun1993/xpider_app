@@ -1,6 +1,8 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.0
 
+import "../components"
+
 PanelNeural3Form {
   property var sensor_list: []
   property var groups: [{action: [], "id": 1, "learned": 0}, {action:[], "id": 2, "learned": 0}]
@@ -82,6 +84,7 @@ PanelNeural3Form {
     }
 
     TabButton {
+      id: add_button
       width: app_window.width * 0.046
       height: app_window.height * 0.081
       anchors.verticalCenter: parent.verticalCenter
@@ -102,7 +105,12 @@ PanelNeural3Form {
           group_tab_bar.currentIndex = groups.length-1;
           setActionGridModel(groups.length-1)
           if(groups.length >= 5) {
-            parent.enabled = false;
+            add_button.enabled = false;
+          }
+
+          if(groups.length > 2) {
+            delete_group_button.enabled = true
+            delete_group_button.opacity = 1
           }
         }
       }
@@ -171,9 +179,9 @@ PanelNeural3Form {
       spacing: parent.width * 0.2
 
       Button {
+        id: delete_group_button
         width: page.width * 0.061
         height: page.height * 0.109
-        enabled: false
 
         background: Image {
           anchors.fill: parent
@@ -181,10 +189,31 @@ PanelNeural3Form {
         }
 
         onClicked: {
-          groups.splice(group_tab_bar.currentIndex, 1);
+          var current_index = group_tab_bar.currentIndex
+          groups.splice(current_index, 1);
           groups_repeater.model = groups.length;
-          group_tab_bar.currentIndex = groups.length-1;
-          setActionGridModel(groups.length-1)
+          groups.forEach(function(group) {
+            if(group.id > current_index) {
+              group.id -= 1
+            }
+            group.learned=0;
+          })
+
+          if(current_index >= groups.length) {
+            group_tab_bar.currentIndex = groups.length-1
+          } else {
+            group_tab_bar.currentIndex = current_index
+          }
+          setActionGridModel(group_tab_bar.currentIndex)
+
+          add_button.enabled = true;
+
+          xpider_center.forget();
+
+          if(groups.length <= 2) {
+            delete_group_button.enabled = false
+            delete_group_button.opacity = 0.3
+          }
         }
       }
 
@@ -199,16 +228,21 @@ PanelNeural3Form {
 
         onClicked: {
           xpider_center.forget();
-          groups = [{action: [], "id": 1, "learned": 0}, {action:[], "id": 2, "learned": 0}];
-          groups_repeater.model = groups.length;
-          group_tab_bar.currentIndex = groups.length - 1;
-          setActionGridModel(groups.length-1)
+          groups.forEach(function(group) {
+            group.learned=0;
+          })
+          panel_neural_learned_text.text = "Learned: " + groups[group_tab_bar.currentIndex].learned + "/10";
+
+//          groups = [{action: [], "id": 1, "learned": 0}, {action:[], "id": 2, "learned": 0}];
+//          groups_repeater.model = groups.length;
+//          group_tab_bar.currentIndex = groups.length - 1;
+//          setActionGridModel(groups.length-1)
         }
       }
     }
 
     onClosed: {
-      panel_nerual_trash_button_background.source = "qrc:/images/panel_neural_button_trash.png"
+      panel_neural_trash_button_background.source = "qrc:/images/panel_neural_button_trash.png"
     }
   }
 
@@ -397,46 +431,76 @@ PanelNeural3Form {
     }
   }
 
+  XDialog {
+    id: panel_neural3_dialog
+
+    Text {
+      anchors.centerIn: parent
+      width: parent.width * 0.9
+      id: panel_neural3_dialog_text
+
+      text:"Each group needs at least 10 samples for training."
+      color: app_window.colorA
+      font.pointSize: 18
+      horizontalAlignment: Text.AlignHCenter
+      wrapMode: Text.Wrap
+    }
+  }
+
   panel_neural_trash_button.onClicked: {
     trash_popup.open();
-    panel_nerual_trash_button_background.source = "qrc:/images/panel_neural_button_trash_click.png"
+    panel_neural_trash_button_background.source = "qrc:/images/panel_neural_button_trash_click.png"
   }
 
   panel_neural_learn_button.onClicked: {
     groups.forEach(function(group) {
       xpider_center.saveGroupData(JSON.stringify(group));
     })
-//    train_timer.start();
     xpider_center.learn(group_tab_bar.currentIndex+1, sensor_list);
     groups[group_tab_bar.currentIndex].learned += 1;
     panel_neural_learned_text.text = "Learned: " + groups[group_tab_bar.currentIndex].learned + "/10";
+    learning_animation.restart();
   }
 
   panel_neural_stop_button.onClicked: {
-    // train_timer.stop();
     xpider_center.emergencyStop();
   }
 
   panel_neural_run_button.onClicked: {
+    var has_learned = true
     groups.forEach(function(group) {
       xpider_center.saveGroupData(JSON.stringify(group));
+      if(group.learned < 10) {
+        has_learned = false
+      }
     })
-    xpider_center.sendGroupInfo();
-    xpider_center.sendLearnInfo(sensor_list);
-    xpider_center.sendRunData();
+
+    if(has_learned === true) {
+      xpider_center.sendGroupInfo();
+      xpider_center.sendLearnInfo(sensor_list);
+      xpider_center.sendRunData();
+    } else {
+      panel_neural3_dialog.open();
+    }
   }
 
-//  Timer {
-//    id: train_timer
-//    interval: 1000
-//    repeat: true
-//    running: false
+  SequentialAnimation {
+    id: learning_animation
+    running: false;
+    ScaleAnimator {
+      target: panel_neural_learned_text
+      from: 1
+      to: 1.3
+      duration: 200
+    }
 
-//    onTriggered: {
-//      console.debug("Train timer triggered.")
-//      xpider_center.learn(group_tab_bar.currentIndex+1, sensor_list);
-//    }
-//  }
+    ScaleAnimator {
+      target: panel_neural_learned_text
+      from: 1.3
+      to: 1
+      duration: 200
+    }
+  }
 
   /* set group action grid model */
   function setActionGridModel(group_index) {
@@ -474,6 +538,14 @@ PanelNeural3Form {
     console.debug("Load group data: ", raw_data)
     if(raw_data !== "") {
       groups = JSON.parse(raw_data)
+      groups.forEach(function(group) {
+        group.learned=0;
+      })
+    }
+
+    if(groups.length <= 2) {
+      delete_group_button.enabled = false
+      delete_group_button.opacity = 0.3
     }
   }
 

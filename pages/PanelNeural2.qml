@@ -32,6 +32,22 @@ PanelNeural2Form {
     }
   }
 
+  XDialog {
+    id: panel_neural2_dialog
+
+    Text {
+      anchors.centerIn: parent
+      width: parent.width * 0.9
+      id: panel_neural2_dialog_text
+
+      text:"Please select at least 1 sensor"
+      color: app_window.colorA
+      font.pointSize: 18
+      horizontalAlignment: Text.AlignHCenter
+      wrapMode: Text.Wrap
+    }
+  }
+
   panel_neural_2_gridview.model: sensor_list_model
   panel_neural_2_gridview.delegate:
    NeuralItem {
@@ -48,13 +64,20 @@ PanelNeural2Form {
     }
   }
 
-  panel_nerual_2_button.onClicked: {
+  panel_neural_2_button.onClicked: {
+    var is_empty = true
+    sensor_list = []
     for(var i=0; i<sensor_list_model.count; i++) {
       if(sensor_list_model.get(i).selected === true) {
         sensor_list.push(i+1);
+        is_empty = false
       }
     }
 
-    stack.push("qrc:/pages/PanelNeural3.qml", {"sensor_list": sensor_list})
+    if(is_empty === true) {
+      panel_neural2_dialog.open()
+    } else {
+      stack.push("qrc:/pages/PanelNeural3.qml", {"sensor_list": sensor_list})
+    }
   }
 }

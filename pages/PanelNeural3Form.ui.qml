@@ -7,7 +7,7 @@ Item {
   property alias panel_neural_run_button: panel_neural_run_button
   property alias panel_neural_stop_button: panel_neural_stop_button
   property alias panel_neural_trash_button: panel_neural_trash_button
-  property alias panel_nerual_trash_button_background: panel_nerual_trash_button_background
+  property alias panel_neural_trash_button_background: panel_neural_trash_button_background
 
   id: page
 
@@ -58,7 +58,7 @@ Item {
       height: page.height * 0.165
 
       background: Image {
-        id: panel_nerual_trash_button_background
+        id: panel_neural_trash_button_background
         anchors.centerIn: parent
         width: page.width * 0.081
         height: page.height * 0.144

@@ -54,7 +54,7 @@ void XpiderComm::Connect(const QString &host_name, const quint16 &host_port) {
         break;
     }
     socket_->abort();
-    qDebug() << "(XpiderComm) Can not connect xpider, try again";
+    qWarning() << "(XpiderComm) Can not connect xpider, try again";
     QThread::yieldCurrentThread();
   }
 

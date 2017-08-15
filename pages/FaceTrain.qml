@@ -207,10 +207,10 @@ FaceTrainForm {
     }
 
     onDeviceDisconnected: {
-      if(panel_face_camera.is_opened() === true) {
-        panel_face_camera.stopVideo()
-        video_status_message.text = "Please check wifi and xpider power status"
-      }
+//      if(panel_face_camera.is_opened() === true) {
+//        panel_face_camera.stopVideo()
+//        video_status_message.text = "Please check wifi and xpider power status"
+//      }
     }
   }
 
