@@ -424,7 +424,7 @@ void XpiderCenter::UpdateAutopilot() {
   float target_degree = M_PI_2 - atan2(delta_y, delta_x);
 
   /* Xpider use -PI to PI */
-  target_degree = target_degree>M_PI ? target_degree-M_PI*2 : target_degree;
+  // target_degree = target_degree>M_PI ? target_degree-M_PI*2 : target_degree;
 
   if(fabs(delta_x) > 5 || fabs(delta_y) > 5) {
     uint8_t *buffer;
