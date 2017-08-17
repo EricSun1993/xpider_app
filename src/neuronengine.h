@@ -17,6 +17,7 @@
 ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **
 ****************************************************************************/
+
 #ifndef NEURONENGINE_H
 #define NEURONENGINE_H
 #include <stdint.h>
