@@ -17,28 +17,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-#include <QTime>
+#include <QDir>
+#include <QQmlContext>
 #include <QQuickWindow>
-#include <QtNetwork>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QObject>
-#include <QVariant>
-#include <QDir>
 
-#include "src/face_provider.h"
 #include "src/xpider_center.h"
-#include "src/face_detect_filter.h"
 #include "src/xpider_camera.h"
-
-void delay() {
-  QTime t;
-  t.start();
-  while(t.elapsed()<2000) {
-    QCoreApplication::processEvents();
-  }
-}
+#include "src/face_provider.h"
+#include "src/face_detect_filter.h"
 
 int main(int argc, char *argv[])
 {
@@ -66,9 +54,6 @@ int main(int argc, char *argv[])
 
   qmlRegisterType<XpiderCamera>("Xpider", 1, 0, "XCamera");
   qmlRegisterType<FaceDetectFilter>("Xpider", 1, 0, "FaceDetectFilter");
-
-  // TODO: This is not a offical way to delay splash page
-  //delay();
 
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

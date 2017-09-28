@@ -33,6 +33,9 @@
 const quint16 XpiderCenter::kXpiderPort = 80;
 const QString XpiderCenter::kXpiderHost = QString::fromStdString("192.168.100.1");
 
+// const quint16 XpiderCenter::kXpiderPort = 8899;
+// const QString XpiderCenter::kXpiderHost = QString::fromStdString("10.10.100.254");
+
 const quint16 XpiderCenter::kSendInterval = 20;
 const quint16 XpiderCenter::kConnectInterval = 5000;
 const quint16 XpiderCenter::kCommWatchdogInterval = 3000;

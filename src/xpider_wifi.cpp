@@ -19,10 +19,10 @@
 
 #include "xpider_wifi.h"
 
-const QString XpiderWIFI::kReuqestUrl = "http://192.168.100.1/param.cgi";
 const QString XpiderWIFI::kUserName = "admin";
 const QString XpiderWIFI::kUserPassword = "admin";
 const QString XpiderWIFI::kWifiPassword = "12345678";
+const QString XpiderWIFI::kReuqestUrl = "http://192.168.100.1/param.cgi";
 
 XpiderWIFI::XpiderWIFI(QObject *parent) : QObject(parent) {
   network_manager_ = new QNetworkAccessManager(this);
