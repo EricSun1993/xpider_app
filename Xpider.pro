@@ -71,7 +71,8 @@ android {
     android/res/values/libs.xml \
     android/build.gradle \
     android/res/drawable/splash.xml \
-    android/res/values/apptheme.xml
+    android/res/values/apptheme.xml \
+    android/src/org/makercollider/xpider/QtFullScreenActivity.java
 
   ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
